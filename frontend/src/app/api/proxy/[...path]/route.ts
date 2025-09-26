@@ -3,14 +3,15 @@ import {
   makeAuthenticatedFileUpload,
   makeAuthenticatedRequest,
 } from "@/lib/autogpt-server-api/helpers";
-import { getAgptServerBaseUrl } from "@/lib/env-config";
+import { getAgptServerApiUrl } from "@/lib/env-config";
 import { NextRequest, NextResponse } from "next/server";
 
 function buildBackendUrl(path: string[], queryString: string): string {
   // Remove 'api' from the beginning of path if it exists to avoid double /api/
   const filteredPath = path[0] === 'api' ? path.slice(1) : path;
   const backendPath = filteredPath.join("/");
-  return `${getAgptServerBaseUrl()}/api/${backendPath}${queryString}`;
+  // Use the full API URL which already includes /api prefix
+  return `${getAgptServerApiUrl()}/${backendPath}${queryString}`;
 }
 
 async function handleJsonRequest(
